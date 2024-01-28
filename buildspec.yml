@@ -4,12 +4,12 @@ phases:
   install:
     runtime-versions:
       nodejs: 10
-    pre_build:
-      commands:
-        - npm ci
-    build:
-      commands: 
-        - npm run build
+  pre_build:
+    commands:
+      - npm ci
+  build:
+    commands: 
+      - npm run build
 artifacts:
   files:
     - start-service.sh
