@@ -130,4 +130,4 @@ dist
 .pnp.*
 
 # AWS CloudFormation
-cnf_output/
+cfn_output/main.yml
