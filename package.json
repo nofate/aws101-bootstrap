@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "start": "node ./node_modules/pm2/bin/pm2 start ./server.js --name hello_aws --log ../logs/app.log --update-env -- --STACK_NAME ${STACK_NAME}",
+    "start": "node ./node_modules/pm2/bin/pm2 start ./server.js --name hello-aws --log ../logs/app.log --update-env -- --STACK_NAME ${STACK_NAME}",
     "stop": "node ./node_modules/pm2/bin/pm2 stop hello-aws",
     "build": "echo 'Building...'"
   },
