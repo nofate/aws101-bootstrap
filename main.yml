@@ -23,6 +23,8 @@ Parameters:
     Type: String
     NoEcho: true
     Description: 'A GitHub personal access token with "repo" and "admin:repo_hook" permissions.'
+  Domain:
+    Type: String
 
 Resources:
 
@@ -34,6 +36,8 @@ Resources:
       Parameters:
         EC2InstanceType: !Ref EC2InstanceType
         EC2AMI: !Ref EC2AMI
+        Domain: !Ref Domain 
+        SubDomain: staging 
 
   Prod:
     Type: AWS::CloudFormation::Stack
@@ -44,6 +48,8 @@ Resources:
       Parameters:
         EC2InstanceType: !Ref EC2InstanceType
         EC2AMI: !Ref EC2AMI
+        Domain: !Ref Domain 
+        SubDomain: prod 
 
 # ****** DEPLOYMENT *********  
 

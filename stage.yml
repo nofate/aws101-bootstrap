@@ -5,6 +5,10 @@ Parameters:
     Type: String
   EC2AMI:
     Type: String
+  Domain:
+    Type: String
+  SubDomain:
+    Type: String
 
 Resources:
 
@@ -145,6 +149,16 @@ Resources:
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
+
+  DNS:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneName: !Sub '${Domain}.'
+      Name: !Sub '${SubDomain}.${Domain}.'
+      Type: A
+      AliasTarget:
+        HostedZoneId: !GetAtt LoadBalancer.CanonicalHostedZoneID
+        DNSName: !GetAtt LoadBalancer.DNSName
 
 # ****** INSTANCE *********  
 
@@ -298,8 +312,8 @@ Resources:
 
 Outputs:
   LBEndpoint:
-    Description: The DNS name for the LB
-    Value: !Sub "http://${LoadBalancer.DNSName}:80"
+    Description: The DNS name for the stage
+    Value: !Sub "http://${DNS}"
   ScalingGroup:
     Description: The ScalingGroup for this stage
     Value: !Ref ScalingGroup

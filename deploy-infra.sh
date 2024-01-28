@@ -15,6 +15,8 @@ GH_OWNER=$(cat ~/.github/aws-bootstrap-owner)
 GH_REPO=$(cat ~/.github/aws-bootstrap-repo)
 GH_BRANCH=master
 
+DOMAIN=unsafe.solutions
+
 # Deploy static resources
 echo -e "\n\n=========== Deploying setup.yml ==========="
 aws cloudformation deploy \
@@ -54,6 +56,7 @@ aws cloudformation deploy \
   --no-fail-on-empty-changeset \
   --capabilities CAPABILITY_NAMED_IAM \
   --parameter-overrides \
+    Domain=$DOMAIN \
     EC2InstanceType=$EC2_INSTANCE_TYPE \
     GitHubOwner=$GH_OWNER \
     GitHubRepo=$GH_REPO \
