@@ -209,7 +209,7 @@ Resources:
     Type: AWS::EC2::Instance
     CreationPolicy:
       ResourceSignal:
-        Timeout: PT5M
+        Timeout: PT10M
         Count: 1
     Properties:
       LaunchTemplate:
@@ -223,7 +223,7 @@ Resources:
     Type: AWS::EC2::Instance
     CreationPolicy:
       ResourceSignal:
-        Timeout: PT5M
+        Timeout: PT10M
         Count: 1
     Properties:
       LaunchTemplate:
@@ -294,7 +294,7 @@ Resources:
             EOF
 
             chown ec2-user:ec2-user /tmp/install_script.sh && chmod a+x /tmp/install_script.sh
-            sleep 1; su - ec2-user -c "/tmp/install_script.sh"
+            sleep 1; sudo su - ec2-user -c "/tmp/install_script.sh"
 
             # Have CloudFormation install any files and packages from the metadata
             /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --region ${AWS::Region} --resource InstanceLaunchTemplate
@@ -303,10 +303,7 @@ Resources:
             export INSTANCE_ID="`wget -q -O - http://169.254.169.254/latest/meta-data/instance-id`"
 
             # Query EC2 describeTags method and pull our the CFN Logical ID for this instance
-            export LOGICAL_ID=`aws --region ${AWS::Region} ec2 describe-tags \ 
-              --filters "Name=resource-id,Values=${!INSTANCE_ID}" \
-                        "Name=key,Values=aws:cloudformation:logical-id" \
-              | jq -r ".Tags[0].Value"`
+            export LOGICAL_ID=`aws --region ${AWS::Region} ec2 describe-tags --filters Name=resource-id,Values=${!INSTANCE_ID} Name=key,Values=aws:cloudformation:logical-id | jq -r .Tags[0].Value`
 
             # Signal to CloudFormation that the instance is ready
             /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --region ${AWS::Region} --resource ${!LOGICAL_ID}
