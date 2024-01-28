@@ -16,6 +16,8 @@ GH_REPO=$(cat ~/.github/aws-bootstrap-repo)
 GH_BRANCH=master
 
 DOMAIN=unsafe.solutions
+CERT=$(aws acm list-certificates --region $REGION --profile awsbootstrap --output text \
+        --query "CertificateSummaryList[?DomainName=='$DOMAIN'].CertificateArn | [0]") 
 
 # Deploy static resources
 echo -e "\n\n=========== Deploying setup.yml ==========="
@@ -57,6 +59,7 @@ aws cloudformation deploy \
   --capabilities CAPABILITY_NAMED_IAM \
   --parameter-overrides \
     Domain=$DOMAIN \
+    Certificate=$CERT \
     EC2InstanceType=$EC2_INSTANCE_TYPE \
     GitHubOwner=$GH_OWNER \
     GitHubRepo=$GH_REPO \
