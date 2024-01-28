@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ec2-user/app-release
+    destination: /home/ec2-user/app/release
 permissions:
   - object: /home/ec2-user/app/release
     pattern: "**"
@@ -13,7 +13,7 @@ hooks:
     - location: start-service.sh
       timeout: 300
       runas: ec2-user
-  # ApplicationStop:
-  #   - location: stop-service.sh
-  #     timeout: 300
-  #     runas: ec2-user
+  ApplicationStop:
+    - location: stop-service.sh
+      timeout: 300
+      runas: ec2-user
